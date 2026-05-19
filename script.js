@@ -42,7 +42,7 @@ function createPlayer(name, marker) {
 
 
 const gameController = (function() {
-
+    
     const p1 = createPlayer("Player One", "X");
     const p2 = createPlayer("Player Two", "O");
 
@@ -51,7 +51,7 @@ const gameController = (function() {
 
     function playRound(index) {
         if (gameOver == true) {
-            return;
+            return currentPlayer;
         }
 
         gameboard.setCell(index, currentPlayer.marker)
@@ -73,6 +73,12 @@ const gameController = (function() {
                 const [a, b, c] = combo;
 
                 if (
+                    board[a] === "" &&
+                    board[b] === "" &&
+                    board[c] === "" 
+                ) return;
+
+                if (
                     board[a] === currentPlayer.marker &&
                     board[b] === currentPlayer.marker &&
                     board[c] === currentPlayer.marker
@@ -81,14 +87,13 @@ const gameController = (function() {
 
         }
 
-        const winner = checkBoardState(gameboard.getBoard());
-
-        if (winner) {
-            gameOver = true;
-        }
+        changePlayer();
 
     }
 
+    function changePlayer() {
+        currentPlayer = currentPlayer === p1 ? p2 : p1;
+    }
 
     return {
         playRound
@@ -96,4 +101,15 @@ const gameController = (function() {
 
 })();
 
+
+gameController.playRound(0);
+console.log(gameboard.getBoard());
+gameController.playRound(4);
+console.log(gameboard.getBoard());
+gameController.playRound(1);
+console.log(gameboard.getBoard());
+gameController.playRound(5);
+console.log(gameboard.getBoard());
+gameController.playRound(2);
+console.log(gameboard.getBoard());
 
